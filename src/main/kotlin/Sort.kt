@@ -7,26 +7,25 @@ fun main() {
     mergeSort(list)
 }
 
-fun mergeSort(list: List<Int>, tabs: Int = 0): List<Int> {
-    IntRange(0, tabs).map { print("  ") }
-    println("list: $list")
+fun mergeSort(list: List<Int>, numberOfSpaces: Int = 0): List<Int> {
+    println("${indent(numberOfSpaces)}list: $list")
     val pivot = list.count() / 2
     if (pivot == 0) {
         return list.toList()
     }
     var list1 = if (list.count() == 1) list else list.take(pivot)
     var list2 = if (list.count() == 1) emptyList() else list.takeLast(list.count() - pivot)
-    IntRange(0, tabs).map { print("  ") }
-    println("Calling mergeSort on list $list1")
-    list1 = mergeSort(list1, tabs + 1)
-    IntRange(0, tabs).map { print("  ") }
-    println("Calling mergeSort on list $list2")
-    list2 = mergeSort(list2, tabs + 1)
+
+    println("${indent(numberOfSpaces)}Calling mergeSort on list $list1")
+    list1 = mergeSort(list1, numberOfSpaces + 1)
+
+    println("${indent(numberOfSpaces)}Calling mergeSort on list $list2")
+    list2 = mergeSort(list2, numberOfSpaces + 1)
+
+    println("${indent(numberOfSpaces)}Calling sort on $list1 and $list2")
     val sorted = sort(list1, list2)
-    IntRange(0, tabs).map { print("  ") }
-    println("Calling sort on $list1 and $list2")
-    IntRange(0, tabs).map { print("  ") }
-    println("$GREEN_BACKGROUND $GREY_BACKGROUND Sorted list: $sorted$RESET_COLOR")
+
+    println("${indent(numberOfSpaces)}$GREEN_BACKGROUND $GREY_BACKGROUND Sorted list: $sorted$RESET_COLOR")
     println()
     return sorted
 }
@@ -50,6 +49,9 @@ private fun sort(list1: List<Int>, list2: List<Int>, sortedList: MutableList<Int
     }
 }
 
+private fun indent(spaces: Int): String {
+    return IntRange(0, spaces).map { "  " }.reduce { acc, s -> acc + s }
+}
 /*
   list: [2, 5, 3, 1, 8, 4, 9, 7]
   Calling mergeSort on list [2, 5, 3, 1]
